@@ -11,13 +11,25 @@ import avartar1 from './assets/avatars/image-amyrobson.png'
 import UserCommentSection from './UserCommentSection'
 
 function App() {
+  const [count, setCount] = useState(4)
+
+  const handleCount = () => {
+    let originalCount = count
+
+    setCount(count + 1)
+    let newCount = count
+
+  }
+  const handleSubtraction = () => {
+    setCount(count - 1)
+  }
 
   return (
     <>
       {
         comments.comments.map(eachComment => (
         <div className='flex flex-col items-end'>
-          <div key={eachComment.id} className="comments rounded-xl bg-white mt-10 px-8 py-8 flex w-full">
+          <div key={eachComment.id} className="comments rounded-xl bg-white mt-10 px-8 py-8 flex flex-col lg:flex-row w-full">
             <Counter />
 
             <div className="userComment flex flex-col w-full">
@@ -28,7 +40,7 @@ function App() {
                   <p className="name font-allText font-medium text-darkBlue">{eachComment.user.username}</p>
                   <p className="time font-allText font-normal text-grayBlue text-sm">{eachComment.createdAt}</p>
                 </div>
-                <div className="replyDiv flex items-center hover:opacity-25">
+                <div className="replyDiv hidden lg:flex items-center hover:opacity-25">
                   <img src={replyIcon} alt="a reply icon" className='pr-2 h-4' />
                   <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Reply</p>
                 </div>
@@ -38,6 +50,20 @@ function App() {
                 <p className='font-allText text-md text-grayBlue mt-5'>{eachComment.content}</p>
               </div>
             </div>
+            {/* responsive counter and reply btn */}
+            <div className="counterReply flex lg:hidden justify-between items-center  w-full mt-5">
+              <div className="counter bg-veryLightGray flex lg:hidden items-center justify-between space-x-4 mr-3 px-3 py-3 w-5/12 h-10 rounded-lg">
+                <img src={plusIcon} className='w-4 hover:opacity-50' onClick={handleCount}/>
+                <p className='text-moderateBlue  font-bold text-sm font-allText'>{count}</p>
+                <img src={minusIcon} className='w-4 hover:opacity-50' onClick={handleSubtraction}/>
+              </div>
+
+              <div className="replyDiv flex lg:hidden items-center hover:opacity-25">
+                  <img src={replyIcon} alt="a reply icon" className='pr-2 h-4' />
+                  <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Reply</p>
+              </div>
+            </div>
+            
           </div>
 
           {/* Replies section */}
@@ -53,7 +79,7 @@ function App() {
                           <p className="name font-allText font-medium text-darkBlue">{eachReply.user.username}</p>
                           <p className="time font-allText font-normal text-grayBlue text-sm">{eachReply.createdAt}</p>
                         </div>
-                        <div className="replyDiv flex items-center hover:opacity-25">
+                        <div className="replyDiv hidden lg:flex items-center hover:opacity-25">
                           <img src={replyIcon} alt="a reply icon" className='pr-2 h-4' />
                           <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Reply</p>
                         </div>
@@ -61,6 +87,19 @@ function App() {
 
                       <div className="comment-text">
                         <p className='font-allText text-md text-grayBlue mt-5'>{eachReply.content}</p>
+                      </div>
+                      
+                      <div className="counterReply flex lg:hidden justify-between items-center  w-full mt-5">
+                        <div className="counter bg-veryLightGray flex lg:hidden items-center justify-between space-x-4 mr-3 px-3 py-3 w-5/12 h-10 rounded-lg">
+                          <img src={plusIcon} className='w-4 hover:opacity-50' onClick={handleCount}/>
+                          <p className='text-moderateBlue  font-bold text-sm font-allText'>{count}</p>
+                          <img src={minusIcon} className='w-4 hover:opacity-50' onClick={handleSubtraction}/>
+                        </div>
+
+                        <div className="replyDiv flex lg:hidden items-center hover:opacity-25">
+                            <img src={replyIcon} alt="a reply icon" className='pr-2 h-4' />
+                            <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Reply</p>
+                        </div>
                       </div>
 
                     </div>

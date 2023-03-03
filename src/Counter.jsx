@@ -17,11 +17,14 @@ function Counter() {
   }
 
   return (
-        <div className="counter bg-veryLightGray flex flex-col items-center justify-between mr-3 px-3 py-3 h-24 rounded-lg">
+      <>
+        <div className="counter bg-veryLightGray hidden lg:flex flex-col items-center justify-between mr-3 px-3 py-3 h-24 rounded-lg">
           <img src={plusIcon} className='w-4 hover:opacity-50' onClick={handleCount}/>
           <p className='text-moderateBlue  font-bold text-sm font-allText'>{count}</p>
           <img src={minusIcon} className='w-4 hover:opacity-50' onClick={handleSubtraction}/>
         </div>
+        
+      </>
   )
 }
 
