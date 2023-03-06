@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import comments from './Data.json'
 import deleteIcon from './assets/icon-delete.svg'
 import editIcon from './assets/icon-edit.svg'
@@ -12,17 +12,50 @@ import UserCommentSection from './UserCommentSection'
 
 function App() {
   const [count, setCount] = useState(4)
+  const [text, setText] = useState('')
+  
 
   const handleCount = () => {
     let originalCount = count
 
     setCount(count + 1)
     let newCount = count
-
   }
   const handleSubtraction = () => {
     setCount(count - 1)
   }
+
+  // post comment func
+  const handlePostComment = () => {
+    let name = text
+    let date = `${new Date().toLocaleDateString('en-NG')} - ${new Date().toLocaleTimeString('en-NG')}`
+    console.log(date)
+
+      let userObj = {
+        'id' : name,
+        'content' : text,
+        'createdAt': date,
+        'user' : {
+          'image' : {
+            'png': comments.currentUser.image.png,
+            'webp': comments.currentUser.image.webp,
+            'reply': editIcon,
+            "edit": "./src/assets/icon-edit.svg",
+            "delete": "./src/assets/icon-delete.svg"
+          },
+          'username': comments.currentUser.username
+        },
+        'replies': [
+
+        ]
+      }
+      comments.comments.push(userObj)
+    console.log(comments.comments);;
+    setText('');
+  }
+
+  
+  
 
   return (
     <>
@@ -40,9 +73,29 @@ function App() {
                   <p className="name font-allText font-medium text-darkBlue">{eachComment.user.username}</p>
                   <p className="time font-allText font-normal text-grayBlue text-sm">{eachComment.createdAt}</p>
                 </div>
-                <div className="replyDiv hidden lg:flex items-center hover:opacity-25">
-                  <img src={replyIcon} alt="a reply icon" className='pr-2 h-4' />
-                  <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Reply</p>
+                <div className="replyDiv hidden lg:flex items-center ">
+                  {/* <img src={eachComment.user.image.reply} alt="a reply icon" className='pr-2 h-4' /> */}
+                  {
+                    eachComment.user.image.delete && eachComment.user.image.edit
+                    ?
+                    <>
+                      <div className="editDiv flex hover:opacity-25">
+                         <img src={eachComment.user.image.edit} className='pr-2 h-4' />
+                        <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue pr-2'>Edit</p>
+                      </div>
+                      <div className="deleteDiv flex hover:opacity-25">
+                        <img src={eachComment.user.image.delete} className='pr-2 h-4' />
+                      <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Delete</p>
+                      </div>
+                    </>
+                    : 
+                    <>
+                      <div className="replyDiv flex">
+                        <img src={eachComment.user.image.reply} className='pr-2 h-4' />
+                      <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Reply</p>
+                      </div>
+                    </>
+                  }
                 </div>
               </div>
 
@@ -59,7 +112,7 @@ function App() {
               </div>
 
               <div className="replyDiv flex lg:hidden items-center hover:opacity-25">
-                  <img src={replyIcon} alt="a reply icon" className='pr-2 h-4' />
+                  <img src={eachComment.user.image.reply} alt="a reply icon" className='pr-2 h-4' />
                   <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Reply</p>
               </div>
             </div>
@@ -80,7 +133,7 @@ function App() {
                           <p className="time font-allText font-normal text-grayBlue text-sm">{eachReply.createdAt}</p>
                         </div>
                         <div className="replyDiv hidden lg:flex items-center hover:opacity-25">
-                          <img src={replyIcon} alt="a reply icon" className='pr-2 h-4' />
+                          <img src={eachReply.user.image.reply} alt="a reply icon" className='pr-2 h-4' />
                           <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Reply</p>
                         </div>
                       </div>
@@ -109,8 +162,32 @@ function App() {
         </div>
         ))
       }
-   
-      <UserCommentSection />
+
+    
+      {/* <UserCommentSection /> */}
+
+      <div className="relative comments rounded-xl bg-white mt-8 px-8 py-8 flex w-full relative">
+        <div className="userComment flex flex-col lg:flex-row items-start justify-between  w-full">
+
+          <img src={comments.currentUser.image.webp} className='w-10 hidden lg:flex'/>
+
+          <div className="comment-text flex items-start lg:px-3 w-full lg:w-4/5 h-28">
+              <input type='text' placeholder='Add a comment' className='font-allText rounded-lg pl-3 pt-3.5 pb-20 shadow-md w-full item-start outline-moderateBlue' value={text} onChange={e => setText(e.target.value)}/>
+          </div>
+
+          <button className="sendDiv flex items-center hover:opacity-25 hidden lg:flex" onClick={handlePostComment}>
+              <p className='bg-moderateBlue rounded-lg font-allText font-medium lg:font-medium text-sm text-white px-8 py-3 '>SEND</p>
+          </button>
+
+          {/* responsive send and avatar element */}
+          <div className="avatarSend flex justify-between w-full lg:w-0 mt-10">
+            <img src={comments.currentUser.image.webp} className='w-10 flex lg:hidden'/>
+            <div className="sendDiv flex items-center hover:opacity-25 flex lg:hidden">
+              <p className='bg-moderateBlue rounded-lg font-allText font-medium lg:font-medium text-sm text-white px-8 py-3 '>SEND</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
         {/* <div className="replyDiv">
             <p>Hello replies</p>
