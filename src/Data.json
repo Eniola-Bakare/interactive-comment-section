@@ -20,9 +20,7 @@
         "image": { 
           "png": "./src/assets/avatars/image-amyrobson.png",
           "webp": "./src/assets/avatars/image-amyrobson.webp",
-          "reply" : "./src/assets/icon-reply.svg",
-          "edit": "./src/assets/icon-edit.svg",
-          "delete": "./src/assets/icon-delete.svg"
+          "reply" : "./src/assets/icon-reply.svg"
         },
         "username": "amyrobson"
       },

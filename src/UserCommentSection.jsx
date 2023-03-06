@@ -24,7 +24,6 @@ function UserCommentSection() {
           'username': comments.currentUser.username
         },
         'replies': [
-
         ]
       }
       comments.comments.push(userObj)

@@ -54,6 +54,10 @@ function App() {
     setText('');
   }
 
+  // handle reply func
+  const handleReply = () => {
+    
+  }
   
   
 
@@ -62,8 +66,14 @@ function App() {
       {
         comments.comments.map(eachComment => (
         <div className='flex flex-col items-end'>
-          <div key={eachComment.id} className="comments rounded-xl bg-white mt-10 px-8 py-8 flex flex-col lg:flex-row w-full">
-            <Counter />
+          <div key={eachComment.id} className="comments rounded-xl bg-white mt-4 px-8 py-8 flex flex-col lg:flex-row w-full">
+        
+        {/* counter comp */}
+          <div className="counter bg-veryLightGray hidden lg:flex flex-col items-center justify-between mr-3 px-3 py-3 h-24 rounded-lg">
+            <img src={plusIcon} className='w-4 hover:opacity-50' onClick={handleCount}/>
+            <p className='text-moderateBlue  font-bold text-sm font-allText'>{count}</p>
+            <img src={minusIcon} className='w-4 hover:opacity-50' onClick={handleSubtraction}/>
+          </div>
 
             <div className="userComment flex flex-col w-full">
               
@@ -73,27 +83,28 @@ function App() {
                   <p className="name font-allText font-medium text-darkBlue">{eachComment.user.username}</p>
                   <p className="time font-allText font-normal text-grayBlue text-sm">{eachComment.createdAt}</p>
                 </div>
+
+                {/* tenary operator for edit, delete, and reply div */}
                 <div className="replyDiv hidden lg:flex items-center ">
-                  {/* <img src={eachComment.user.image.reply} alt="a reply icon" className='pr-2 h-4' /> */}
                   {
                     eachComment.user.image.delete && eachComment.user.image.edit
                     ?
                     <>
-                      <div className="editDiv flex hover:opacity-25">
-                         <img src={eachComment.user.image.edit} className='pr-2 h-4' />
-                        <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue pr-2'>Edit</p>
+                      <div className="editDiv flex items-center hover:opacity-25">
+                         <img src={eachComment.user.image.delete} alt="a delete icon" className='pr-2 h-4' />
+                          <p className='font-allText font-medium lg:font-semibold text-lg text-softRed pr-2'>Delete</p>
                       </div>
-                      <div className="deleteDiv flex hover:opacity-25">
-                        <img src={eachComment.user.image.delete} className='pr-2 h-4' />
-                      <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Delete</p>
+                      <div className="deleteDiv flex items-center hover:opacity-25">
+                        <img src={eachComment.user.image.edit} alt="an edit icon" className='pr-2 h-4' />
+                        <p className='font-allText font-medium lg:font-semibold text-lg text-moderateBlue'>Edit</p>
                       </div>
                     </>
                     : 
                     <>
-                      <div className="replyDiv flex">
-                        <img src={eachComment.user.image.reply} className='pr-2 h-4' />
-                      <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Reply</p>
-                      </div>
+                      <button className="replyDiv flex items-center hover:opacity-25" onClick={handleReply}>
+                        <img src={eachComment.user.image.reply} alt="a reply icon" className='pr-2 h-4' />
+                        <p className='font-allText font-medium lg:font-semibold text-lg text-moderateBlue'>Reply</p>
+                      </button>
                     </>
                   }
                 </div>
@@ -103,6 +114,7 @@ function App() {
                 <p className='font-allText text-md text-grayBlue mt-5'>{eachComment.content}</p>
               </div>
             </div>
+
             {/* responsive counter and reply btn */}
             <div className="counterReply flex lg:hidden justify-between items-center  w-full mt-5">
               <div className="counter bg-veryLightGray flex lg:hidden items-center justify-between space-x-4 mr-3 px-3 py-3 w-5/12 h-10 rounded-lg">
@@ -111,10 +123,30 @@ function App() {
                 <img src={minusIcon} className='w-4 hover:opacity-50' onClick={handleSubtraction}/>
               </div>
 
-              <div className="replyDiv flex lg:hidden items-center hover:opacity-25">
-                  <img src={eachComment.user.image.reply} alt="a reply icon" className='pr-2 h-4' />
-                  <p className='font-allText font-medium lg:font-semibold text-sm text-moderateBlue'>Reply</p>
-              </div>
+              {/* responsive edit/delete/reply */}
+              <div className="replyDiv flex lg:hidden items-center ">
+                  {
+                    eachComment.user.image.delete && eachComment.user.image.edit
+                    ?
+                    <>
+                      <div className="editDiv flex items-center hover:opacity-25">
+                         <img src={eachComment.user.image.delete} alt="a delete icon" className='pr-2 h-4' />
+                         <p className='font-allText font-medium lg:font-semibold text-md text-softRed pr-2'>Delete</p>
+                      </div>
+                      <div className="deleteDiv flex items-center hover:opacity-25">
+                        <img src={eachComment.user.image.edit} alt="an edit icon" className='pr-2 h-4' />
+                        <p className='font-allText font-medium lg:font-semibold text-md text-moderateBlue'>Edit</p>
+                      </div>
+                    </>
+                    : 
+                    <>
+                      <div className="replyDiv flex items-center">
+                        <img src={eachComment.user.image.reply} alt="a reply icon" className='pr-2 h-4' />
+                      <p className='font-allText font-medium lg:font-semibold text-md text-moderateBlue'>Reply</p>
+                      </div>
+                    </>
+                  }
+                </div>
             </div>
             
           </div>
@@ -182,9 +214,9 @@ function App() {
           {/* responsive send and avatar element */}
           <div className="avatarSend flex justify-between w-full lg:w-0 mt-10">
             <img src={comments.currentUser.image.webp} className='w-10 flex lg:hidden'/>
-            <div className="sendDiv flex items-center hover:opacity-25 flex lg:hidden">
+            <button className="sendDiv flex items-center hover:opacity-25 flex lg:hidden" onClick={handlePostComment}>
               <p className='bg-moderateBlue rounded-lg font-allText font-medium lg:font-medium text-sm text-white px-8 py-3 '>SEND</p>
-            </div>
+            </button>
           </div>
         </div>
       </div>
